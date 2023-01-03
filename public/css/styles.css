@@ -11408,6 +11408,15 @@ body {
   font-size: 10px;
 }
 
+.btn-input-8 {
+  padding: 1px 4px;
+  background-color: #2d2d2d;
+  border-color: #2d2d2d;
+  color: #fff;
+  font-size: 10px;
+}
+
+
 .btn-addnew:hover {
   color: #fff;
 }

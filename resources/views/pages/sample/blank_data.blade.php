@@ -119,6 +119,8 @@
                                         <a :href="row.file" download class="btn btn-danger btn-sm shadow-none">Download</a>
                                     </td>
                                     <td v-else> -- </td> --}}
+                                    <td>@{{ row.prior_date | formatDateTime('DD/MM/YYYY') }}</td>
+                                    <td>@{{ row.prior_date_time | formatDateTime('DD/MM/YYYY') }}</td>
                                     <td>@{{ row.req_accept_date | formatDateTime('DD/MM/YYYY') }}</td>
                                     <td>@{{ row.sewing_date | formatDateTime('DD/MM/YYYY') }}</td>
                                     <td>@{{ row.sample_delivery_date | formatDateTime('DD/MM/YYYY') }}</td>
@@ -162,6 +164,10 @@
 
                                         @isset(Auth::user()->role->permission['permission']['sample_data']['input-7'])
                                         <button data-bs-toggle="modal" data-bs-target="#Materials" class="btn btn-input-7 shadow-none" @@click.prevent="EditMaterialsDate(row)">input-7</button>
+                                        @endisset
+
+                                        @isset(Auth::user()->role->permission['permission']['sample_data']['input-8'])
+                                        <button data-bs-toggle="modal" data-bs-target="#Priority" class="btn btn-input-8 shadow-none" @@click.prevent="EditPriorityDate(row)">input-8</button>
                                         @endisset
 
                                         @isset(Auth::user()->role->permission['permission']['sample_data']['delete'])
@@ -663,7 +669,8 @@
                 { label: 'REQ sent', field: 'req_sent_date', align: 'center' },
                 { label: 'Shrinkage Date', field: 'shrinkage_date', align: 'center' },
                 { label: 'Materials Date', field: 'materials_date', align: 'center' },
-                // { label: 'Excele File', field: 'file', align: 'center' },
+                { label: 'Prior Date', field: 'prior_date', align: 'center' },
+                { label: 'Prior Date & Time', field: 'prior_date_time', align: 'center' },
                 { label: 'REQ accepted date', field: 'req_accept_date', align: 'center' },
                 { label: 'Sewing date', field: 'sewing_date', align: 'center' },
                 { label: 'Sent To Wash', field: 'sample_delivery_date', align: 'center' },
@@ -689,7 +696,6 @@
             }
         },
         methods: {
-        
             onChangeFile() {
                 if(event.target.files == undefined || event.target.files.length < 1) {
                     this.selectedFile = null;
