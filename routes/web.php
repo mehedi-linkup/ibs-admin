@@ -40,7 +40,7 @@ use App\Http\Controllers\MaterialsController;
 */
 
 // Authentication
-Route::group(['middleware' => 'guest'], function() {
+Route::group(['middleware' => 'guest'], function(){
     Route::get('/login', [AuthenticationController::class, 'login'])->name('login');
     Route::post('/login', [AuthenticationController::class, 'authCheack'])->name('login.check');
 });

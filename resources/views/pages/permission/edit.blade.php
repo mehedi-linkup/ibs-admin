@@ -46,7 +46,8 @@
                                         <th>Input-5</th>
                                         <th>Input-6</th>
                                         <th>Input-7</th>
-                                        <th>Insert/Input-8</th>
+                                        <th>Input-8</th>
+                                        <th>Insert</th>
                                         <th>Reset</th>
                                     </tr>
                                 </thead>
@@ -54,7 +55,7 @@
                                     <tr>
                                         <td class="text-start">Select All</td>
                                         <td><input type="checkbox"  id="select-all" /></td>
-                                        <td colspan="12"></td>
+                                        <td colspan="13"></td>
                                     </tr>
                                     <tr>
                                         <td class="text-start">Roles</td>
@@ -62,6 +63,7 @@
                                         <td><input type="checkbox" name="permission[role][edit]"  @isset($permission['permission']['role']['edit']) checked @endisset value="1"></td>
                                         <td><input type="checkbox" name="permission[role][delete]"  @isset($permission['permission']['role']['delete']) checked @endisset value="1"></td>
                                         <td><input type="checkbox" name="permission[role][list]"  @isset($permission['permission']['role']['list']) checked @endisset value="1"></td>
+                                        <td rowspan="12"></td>
                                         <td rowspan="12"></td>
                                         <td rowspan="12"></td>
                                         <td rowspan="12"></td>
@@ -235,7 +237,7 @@
                                         <td><input type="checkbox" name="permission[sample][delete]" value="1" @isset($permission['permission']['sample']['delete']) checked @endisset></td>
                                         <td><input type="checkbox" name="permission[sample][list]" value="1" @isset($permission['permission']['sample']['list']) checked @endisset></td>
                                         <td><input type="checkbox" name="permission[sample][cad]" value="1" @isset($permission['permission']['sample']['cad']) checked @endisset></td>
-                                        <td colspan="8"></td>
+                                        <td colspan="9"></td>
                                     </tr>
                                     <tr>
                                         <td class="text-start">Sample Data</td>
@@ -250,8 +252,9 @@
                                         <td><input type="checkbox" name="permission[sample_data][input-5]" value="1" @isset($permission['permission']['sample_data']['input-5']) checked @endisset></td>
                                         <td><input type="checkbox" name="permission[sample_data][input-6]" value="1" @isset($permission['permission']['sample_data']['input-6']) checked @endisset></td>
                                         <td><input type="checkbox" name="permission[sample_data][input-7]" value="1" @isset($permission['permission']['sample_data']['input-7']) checked @endisset></td>
+                                        <td><input type="checkbox" name="permission[sample_data][input-8]" value="1" @isset($permission['permission']['sample_data']['input-8']) checked @endisset></td>
                                         <td><input type="checkbox" name="permission[sample_data][sample_insert]" value="1" @isset($permission['permission']['sample_data']['sample_insert']) checked @endisset></td>
-                                        <td></td>
+                                        <td><input type="checkbox" name="permission[sample_data][reset]" value="1" @isset($permission['permission']['sample_data']['reset']) checked @endisset></td>
                                     </tr>
                                     <tr>
                                         <td class="text-start">Materials Data</td>
@@ -267,6 +270,7 @@
                                         <td><input type="checkbox" name="permission[meterials_data][input-6]" value="1" @isset($permission['permission']['meterials_data']['input-6']) checked @endisset></td>
                                         <td><input type="checkbox" name="permission[meterials_data][input-7]" value="1" @isset($permission['permission']['meterials_data']['input-7']) checked @endisset></td>
                                         <td><input type="checkbox" name="permission[meterials_data][input-8]" value="1" @isset($permission['permission']['meterials_data']['input-8']) checked @endisset></td>
+                                        <td></td>
                                         <td><input type="checkbox" name="permission[meterials_data][reset]" value="1" @isset($permission['permission']['meterials_data']['reset']) checked @endisset></td>
                                     </tr>
                                 </tbody>

@@ -119,8 +119,8 @@
                                         <a :href="row.file" download class="btn btn-danger btn-sm shadow-none">Download</a>
                                     </td>
                                     <td v-else> -- </td> --}}
-                                    <td>@{{ row.prior_date | formatDateTime('DD/MM/YYYY') }}</td>
-                                    <td>@{{ row.prior_date_time | formatDateTime('DD/MM/YYYY') }}</td>
+                                    <td>@{{ row.priority_date | formatDateTime('DD/MM/YYYY') }}</td>
+                                    <td>@{{ row.priority_time | formatDateTime('DD/MM/YYYY h:mm a') }}</td>
                                     <td>@{{ row.req_accept_date | formatDateTime('DD/MM/YYYY') }}</td>
                                     <td>@{{ row.sewing_date | formatDateTime('DD/MM/YYYY') }}</td>
                                     <td>@{{ row.sample_delivery_date | formatDateTime('DD/MM/YYYY') }}</td>
@@ -591,6 +591,56 @@
             </form>
         </div>
     </div>
+
+     <!-- Modal for Priority data  -->
+     <div class="modal fade" id="Priority" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="PriorityLabel" aria-hidden="true">
+        <div class="modal-dialog ">
+            <form @submit.prevent="updateSampleData">
+                <div class="modal-content" >
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel"><i class="fab fa-first-order"></i> Priority Date Entry</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div v-if="errors.length">
+                            <div class="alert alert-danger" v-for="(error, i) in errors" :key="i">@{{ error }}</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label for="priorTime" class="col-form-label pt-0">Priority Time</label>
+                                    @if (Auth::user()->id == 1)
+                                        <input type="datetime-local" v-model="sampleData.priority_time" class="form-control form-control-sm shadow-none" id="priorTime" >
+                                    @else
+                                        <input type="datetime-local" v-model="sampleData.priority_time" class="form-control form-control-sm shadow-none" id="priorTime" required readonly>
+                                    @endif
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="priorDate" class="col-form-label pt-0">Priority Date</label>
+                                    @if (Auth::user()->id == 1)
+                                        <input type="date" v-model="sampleData.priority_date" class="form-control form-control-sm" id="priorityDate" required>
+                                    @else
+                                        <input type="date" v-model="sampleData.priority_date" class="form-control form-control-sm" id="priorityDate" :readonly="sampleData.priority_date != null " required>
+                                    @endif
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        @if (@Auth::user()->role->id == 1 || @Auth::user()->role->permission['permission']['sample_data']['reset'])
+                            @if(Auth::user()->role->id != 1) 
+                            <button type="button" v-if="!sampleData.req_accept_date" @@click="PriorityReset" class="btn btn-dark btn-sm">Reset</button>
+                            @else
+                            <button type="button" @@click="PriorityReset" class="btn btn-dark btn-sm">Reset</button>
+                            @endif
+                        @endif
+                        <button type="submit" class="btn btn-primary btn-sm" :disabled="onProcess ? true : false ">update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </main>
 @endsection
 @push('js')
@@ -620,6 +670,8 @@
                 shrinkage_date: '',
                 materials_time: '',
                 materials_date: '',
+                priority_date: '',
+                priority_time: '',
                 wash: '',
                 print_emb: '',
                 support_fab: '',
@@ -669,8 +721,8 @@
                 { label: 'REQ sent', field: 'req_sent_date', align: 'center' },
                 { label: 'Shrinkage Date', field: 'shrinkage_date', align: 'center' },
                 { label: 'Materials Date', field: 'materials_date', align: 'center' },
-                { label: 'Prior Date', field: 'prior_date', align: 'center' },
-                { label: 'Prior Date & Time', field: 'prior_date_time', align: 'center' },
+                { label: 'Prior Date', field: 'priority_date', align: 'center' },
+                { label: 'Prior Date & Time', field: 'priority_time', align: 'center' },
                 { label: 'REQ accepted date', field: 'req_accept_date', align: 'center' },
                 { label: 'Sewing date', field: 'sewing_date', align: 'center' },
                 { label: 'Sent To Wash', field: 'sample_delivery_date', align: 'center' },
@@ -764,7 +816,12 @@
                 })
                 sampleData.materials_time != null ? sampleData.materials_time : this.sampleData.materials_time = moment().format("YYYY-MM-DD HH:mm");
             },
-
+            EditPriorityDate(sampleData) {
+                Object.keys(this.sampleData).forEach(item => {
+                    this.sampleData[item] = sampleData[item]
+                })
+                sampleData.priority_time != null ? sampleData.priority_time : this.sampleData.priority_time = moment().format("YYYY-MM-DD HH:mm");
+            },
             updateSampleData() {
                 this.errors = [];
 
@@ -779,7 +836,10 @@
                 let formData = new FormData();
                 formData.append('sample', JSON.stringify(this.sampleData));
 				if (this.selectedFile) formData.append('file', this.selectedFile);
-
+                // Display the key/value pairs
+                // for (var pair of formData.entries()) {
+                //     console.log(pair[0]+ ', ' + pair[1]); 
+                // }
                 axios.post('/update_sample_data' , formData)
                 .then(res => {
                     this.success = res.data.message;
@@ -792,6 +852,7 @@
                     $('#SentToMerchant').modal('hide');
                     $('#Shrinkage').modal('hide');
                     $('#Materials').modal('hide');
+                    $('#Priority').modal('hide');
                     this.onProcess = false;
                     setTimeout(() => {
                         this.success = '';
@@ -884,6 +945,8 @@
                     shrinkage_date: '',
                     materials_time: moment().format("YYYY-MM-DD HH:mm"),
                     materials_date: '',
+                    priority_time: moment().format("YYYY-MM-DD HH:mm"),
+                    priority_date: '',
                     file: null,
                     wash: '',
                     print_emb: '',
@@ -925,6 +988,9 @@
             },
             MaterialsReset() {
                 this.sampleData.materials_date = null;
+            },
+            PriorityReset() {
+                this.sampleData.priority_date = null;
             }
         }
     });

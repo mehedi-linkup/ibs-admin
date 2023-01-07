@@ -27,7 +27,7 @@ class PermissionController extends Controller
 
     public function edit(Permission $permission)
     {
-        $roles = Role::all();
+        $roles = Role::all();       
         return  view('pages.permission.edit',compact('permission', 'roles'));
     }
 
