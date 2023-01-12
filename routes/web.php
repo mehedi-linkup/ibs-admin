@@ -251,7 +251,7 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('/blank/materials', [MaterialsController::class, 'blankMaterials'])->name('blank.materials');
 
     //Cache clear
-    Route::get('clear', function(){
+    Route::get('clear', function() {
         Artisan::call('cache:clear');
         Artisan::call('config:clear');
         Artisan::call('view:clear');

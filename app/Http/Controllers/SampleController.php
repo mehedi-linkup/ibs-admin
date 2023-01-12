@@ -362,7 +362,7 @@ class SampleController extends Controller
         }, 'sample.cad' => function($c) {
             $c->select('id', 'name');
         }])->where('active', 1);
-       
+
         if(isset(Auth::user()->coordinator_id) && Auth::user()->coordinator_id != null) {
             $sampleData = $sampleData->whereHas('sample', function($s) {
                 $s->where('coordinator_id', Auth::user()->coordinator_id);
@@ -394,10 +394,11 @@ class SampleController extends Controller
         if(isset(Auth::user()->wash_unit_id) && Auth::user()->wash_unit_id != null) {
             $sampleData = $sampleData->where('wash_unit_id', Auth::user()->wash_unit_id);
         }
+        
         if(isset(Auth::user()->id) && (Auth::user()->role_id != 1 && Auth::user()->role_id != 4) && Auth::user()->gm == null && Auth::user()->coordinator_id == null && Auth::user()->wash_coordinator_id == null && Auth::user()->finishing_coordinator_id == null && Auth::user()->cad_id == null && Auth::user()->wash_unit_id == null) {
             $sampleData = $sampleData->where('user_id', Auth::user()->id);
         }
-        // return $sampleData->get();
+
         if(isset($request->searchType) && $request->searchType == 'req_date'){
             $sampleData = $sampleData->whereNull('req_accept_date');
         }
@@ -421,8 +422,13 @@ class SampleController extends Controller
         if(isset($request->searchType) && $request->searchType == 'received_date'){
             $sampleData = $sampleData->whereNull('actual_delivery_date');
         }
-
+        // if( Auth::user()->role_id == 4) {
+        //     $sampleData = $sampleData->whereNull('merchant_receive');
+        //     $sampleData = $sampleData->whereNull('sent_finish');
+        //     $sampleData = $sampleData->whereNull('sample_delivery_date');
+        // }
         return $sampleData = $sampleData->orderBy('id', 'DESC')->get();
+       
     }
 
     public function insert(Request $request)

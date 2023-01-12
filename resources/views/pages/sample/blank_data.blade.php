@@ -612,15 +612,15 @@
                                     @if (Auth::user()->id == 1)
                                         <input type="datetime-local" v-model="sampleData.priority_time" class="form-control form-control-sm shadow-none" id="priorTime" >
                                     @else
-                                        <input type="datetime-local" v-model="sampleData.priority_time" class="form-control form-control-sm shadow-none" id="priorTime" required readonly>
+                                        <input type="datetime-local" v-model="sampleData.priority_time" class="form-control form-control-sm shadow-none" id="priorTime" readonly>
                                     @endif
                                 </div>
                                 <div class="col-sm-6">
                                     <label for="priorDate" class="col-form-label pt-0">Priority Date</label>
                                     @if (Auth::user()->id == 1)
-                                        <input type="date" v-model="sampleData.priority_date" class="form-control form-control-sm" id="priorityDate" required>
+                                        <input type="date" v-model="sampleData.priority_date" class="form-control form-control-sm" id="priorityDate">
                                     @else
-                                        <input type="date" v-model="sampleData.priority_date" class="form-control form-control-sm" id="priorityDate" :readonly="sampleData.priority_date != null " required>
+                                        <input type="date" v-model="sampleData.priority_date" class="form-control form-control-sm" id="priorityDate" :readonly="sampleData.priority_date != null ">
                                     @endif
                                 </div>
                                 
@@ -758,10 +758,18 @@
             getSampleData() {
                 axios.post('/get_blank_data', {searchType: this.searchType})
                 .then(res => {
-                    this.sampleDatas = res.data.map((item, sl) => {
+                    // this.sampleDatas
+                    let Data = res.data.map((item, sl) => {
                         item.sl = sl + 1
                         return item;
                         this.show = false;
+                    });
+
+                  
+                    this.sampleDatas = Data.filter((item, sl) => {
+                        if(item.merchant_receive == null || item.sample_delivery_date == null || item.sent_finish == null) {
+                            return item;
+                        }
                     });
                 })
             },
@@ -991,6 +999,7 @@
             },
             PriorityReset() {
                 this.sampleData.priority_date = null;
+                this.sampleData.priority_time = null;
             }
         }
     });
