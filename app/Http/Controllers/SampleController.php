@@ -422,6 +422,9 @@ class SampleController extends Controller
         if(isset($request->searchType) && $request->searchType == 'received_date'){
             $sampleData = $sampleData->whereNull('actual_delivery_date');
         }
+        if(isset($request->searchType) && $request->searchType == 'priority_date'){
+            $sampleData = $sampleData->whereNull('priority_date');
+        }
         // if( Auth::user()->role_id == 4) {
         //     $sampleData = $sampleData->whereNull('merchant_receive');
         //     $sampleData = $sampleData->whereNull('sent_finish');

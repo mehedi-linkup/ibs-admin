@@ -66,6 +66,7 @@
                             <option value="to_finish">To Finish</option>
                             <option value="to_merchant">To Merchant</option>
                             <option value="received_date">Received Sample</option>
+                            <option value="priority_date">Priority Date</option>
                         </select>
                     </div>
                     <div class="col-md-1">
@@ -765,13 +766,16 @@
                         this.show = false;
                     });
 
-                  
+                    @if(@Auth::user()->role->id == 4)
                     this.sampleDatas = Data.filter((item, sl) => {
                         if(item.merchant_receive == null || item.sample_delivery_date == null || item.sent_finish == null) {
                             return item;
                         }
                     });
-                })
+                    @else
+                    this.sampleDatas = Data;
+                    @endif
+                });
             },
 
             getColors() {
