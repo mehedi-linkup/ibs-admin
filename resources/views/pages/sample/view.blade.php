@@ -131,7 +131,7 @@
                         <tr>
                             <th>REQ sent</th>
                             @if (isset($sample_data->req_sent_date))
-                                <td>{{ \Carbon\Carbon::parse($sample_data->req_sent_date)->format('d/m/Y h:m:A') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($sample_data->req_sent_date)->format('d/m/Y h:i A') }}</td>
                             @else
                                 <td>{{ $sample_data->req_sent_date }}</td>
                             @endif
@@ -145,11 +145,43 @@
                             @endif
                         </tr>
                         <tr>
+                            <th>Shrinkage Time</th>
+                            @if (isset($sample_data->shrinkage_time))
+                                <td>{{ \Carbon\Carbon::parse($sample_data->shrinkage_time)->format('d/m/Y h:i A') }}</td>
+                            @else
+                                <td>{{ $sample_data->shrinkage_time }}</td>
+                            @endif
+                        </tr>
+                        <tr>
                             <th>Materials Date</th>
                             @if (isset($sample_data->materials_date))
                                 <td>{{ \Carbon\Carbon::parse($sample_data->materials_date)->format('d/m/Y') }}</td>
                             @else
                                 <td>{{ $sample_data->materials_date }}</td>
+                            @endif
+                        </tr>
+                        <tr>
+                            <th>Materials Update Time</th>
+                            @if (isset($sample_data->materials_time))
+                                <td>{{ \Carbon\Carbon::parse($sample_data->materials_time)->format('d/m/Y h:i A') }}</td>
+                            @else
+                                <td>{{ $sample_data->materials_time }}</td>
+                            @endif
+                        </tr>
+                        <tr>
+                            <th>Priority Date</th>
+                            @if (isset($sample_data->priority_date))
+                                <td>{{ \Carbon\Carbon::parse($sample_data->priority_date)->format('d/m/Y') }}</td>
+                            @else
+                                <td>{{ $sample_data->priority_date }}</td>
+                            @endif
+                        </tr>
+                        <tr>
+                            <th>Priority Update Time</th>
+                            @if (isset($sample_data->priority_time))
+                                <td>{{ \Carbon\Carbon::parse($sample_data->priority_time)->format('d/m/Y h:i A') }}</td>
+                            @else
+                                <td>{{ $sample_data->priority_time }}</td>
                             @endif
                         </tr>
                         <tr>
